@@ -1,0 +1,317 @@
+/*#region ===== Reset básico =====*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; 
+    min-height: 100vh;
+}
+
+/*#endregion*/
+
+/*#region: ===== Imágenes ===== */
+img {
+    width: 100%;
+    height: auto;
+}
+/*#endregion*/
+
+/*#region ===== HEADER: Full Container =====*/
+.full-container {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 2rem; 
+    background-image: linear-gradient(-60deg, #4f43f9 0%, #19d7f0 100%);
+    color: white;
+    z-index: 15;
+}
+/*#endregion*/
+
+/*#region ===== Contenedores ===== */
+
+        /*Botones*/        /*#region:-- Botones --*/
+.containAllBtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('/aseets/imagen/multimedia/feather.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; 
+    color: white;
+    flex-wrap: wrap;
+    border-radius: 4px;
+}
+
+button {
+    flex: 1 1 auto; /* encoger si hace falta */
+    min-width: 60px; /* evitar botones demasiado pequeños */
+    max-width: 80px;
+    padding: 0.5rem;
+    background-color: rgb(31, 30, 30);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer; /* esto es para: mejorar UX */
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+/* unificación hover/active/focus */
+button:hover,
+button:active,
+button:focus {
+    transform: translateY(-3px) scale(1.05); /* así levita un poquito */
+    outline: none;
+    background-image: linear-gradient(-60deg, #4f43f9 0%, #19d7f0 100%); /* cambio sutil de fondo */
+    color: white; /* mantener contraste */
+    border: 2px solid #747878; /* borde brillante */
+    box-shadow: 0 0 8px #818585;
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:focus-visible {
+    outline: 2px solid #19d7f0;
+}
+/*#endregion botones*/
+
+        /*#region:-- Main/main-header: -containres --*/
+main {
+    flex: 1; /* ocupa el espacio restante */
+}
+
+.main-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.main-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 1rem;
+}
+
+.main-header h2 {
+    padding-top: 1rem;
+}
+
+.portada {
+    border-radius: 4px;
+    width: 95%;
+}
+
+.portada h3 {
+    padding-bottom:  0.5rem;
+}
+/*#endregion: main-header*/
+
+        /*section*/        /*#region:-- section --*/
+.section-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+.section-content h2 {
+    padding-bottom:  2rem;
+}
+
+.card-container {
+    width: 95%;    
+    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), 
+    url('/aseets/imagen/multimedia/aurora.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; 
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+
+}
+
+.card-container figure figcaption {
+    display: flex;
+    gap: 10px;
+}
+
+.card {
+    flex: 1 1 100%; /* una card por fila */
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card img {
+    border: 2px solid transparent;  /* reserva espacio para el borde */
+    border-radius: 10px;
+    display: block;                  /* evita gaps de inline */
+    transition: 
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), /* suavidad en levitación */
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.card img:hover {
+    transform: translateY(-6px) scale(1.05); /* levita un poquito más */
+    border-color: #747878;                   /* borde sutil */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra más suave y difusa */
+}
+
+
+
+
+/*#endregion*/
+
+        /*#region ===== Flex básico ===== */
+.flexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+/*#endregion*/
+
+        /*#region ===== Footer =====*/
+footer {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    color: white;
+    background-image: linear-gradient(-60deg, #4f43f9 0%, #19d7f0 100%);
+}
+
+
+footer p {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/*#endregion*/
+/*#endregion*/
+
+
+/*========================= Media queries =========================*/ 
+        /*#region ===== Media queries =====*/
+
+@media (max-width: 400px) {
+    body {
+        gap: 2rem;
+    }
+    .card-container {
+        background-image: none;
+        background-color: white;
+    }
+
+    button {
+        flex: 1 1 45%; /* dos botones por fila */
+        min-width: 50px;
+        max-width: 70px;
+    }
+    
+    .full-container {
+        padding: 1rem;
+    }
+    .containAllBtn {
+        gap: 0.3rem;
+    }
+}
+
+/*==================================================*/
+
+/* Tablet */
+@media (min-width: 768px) {
+    .container { width: 85%; }
+    .flexContainer > * { width: calc(50% - 20px); }
+
+    button:focus {
+        outline: none;
+        box-shadow: none;
+        background-image: none;
+        transform: none;
+        border: none;
+    }
+
+    .card {
+        width: 300px;
+    }
+
+    .main-header {
+        width: 85%;
+    }
+
+    /*section*/ 
+    .section-content {
+        width: 100%;
+    }
+
+    .card-container {
+        width: 95%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding-bottom: 1rem;
+    }
+
+    .card {
+        flex: 1 1 45%; /* dos cards por fila */
+        max-width: 45%;
+    }
+}
+
+/*==================================================*/
+
+/* Desktop pequeño */
+@media (min-width: 992px) {
+    .container { width: 75%; }
+    .flexContainer > * { width: calc(25% - 20px); }
+
+    .portada {
+        width: 75%;
+    }
+    
+    .card-container {
+        width: 95%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        /* border: 1px solid red;  eliminar borde de depuración */
+    }
+
+    .card {
+        flex: 1 1 30%; /* tres cards por fila aprox */
+        max-width: 30%;
+    }
+}
+
+/*==================================================*/
+
+/* Desktop grande */
+@media (min-width: 1200px) {
+    .container { max-width: 1300px; }
+    .card-container {
+        width: 100%;
+        padding: 1rem;
+        /* border: 3px solid green; eliminar borde de depuración */
+    }
+
+    .card {
+        flex: 1 1 23%; /* cuatro cards por fila aprox */
+        max-width: 23%;
+    }
+}
+/*#endregion*/
