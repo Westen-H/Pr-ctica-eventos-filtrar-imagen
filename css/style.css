@@ -78,6 +78,13 @@ button:focus {
 button:focus-visible {
     outline: 2px solid #19d7f0;
 }
+
+button.active {
+  background-image: linear-gradient(-60deg, #19d7f0 0%, #4f43f9 100%);
+  border: 2px solid white;
+  transform: scale(1.05);
+  color: white;
+}
 /*#endregion botones*/
 
         /*#region:-- Main/main-header: -containres --*/
@@ -141,7 +148,8 @@ main {
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
-
+    padding-top: 1rem;
+    border-radius: 8px 8px 0px 0;
 }
 
 .card-container figure figcaption {

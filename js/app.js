@@ -13,7 +13,25 @@ const cardContainer = document.querySelector('.card-container');
 const buttonsBox = document.querySelector('#buttons');
 const main = document.querySelector('.main.content')
 
+/* =============================== */
 /* ========== VARIABLES ========== */
+/* =============================== */
+
+    /*================== arrays: imagenes / botones ==================*/
+  // crear la función con array de imagenes, y la función los botones de filtro y guardarlos en una costanta, bien de manera directa, o despues de haber creado la función.
+const botonesDeFiltro = () => {
+  const arrayBotones = [
+    { id: 1, titulo: 'Mar', categoria: 'mar' },
+    { id: 3, titulo: 'Señales', categoria: 'senales'},
+    { id: 4, titulo: 'Edificio', categoria: 'edificio'},
+    { id: 5, titulo: 'Arena', categoria: 'arena'},
+    { id: 6, titulo: 'Cosa', categoria: 'cosa'},
+    // { id: 2, titulo: 'Foto 2', categoria: 'mar'},
+    // { id: 7, titulo: 'Foto 7', categoria: 'edificio'}
+  ]
+  return arrayBotones;
+}
+
 function obtenerImagenes() {
   return [
   { id: 1, titulo: 'Foto 1', categoria: 'mar', src: 'aseets/imagen/viajes-1.jpg', alt: 'Persona tumbada en hamaca junto al mar' },
@@ -25,8 +43,11 @@ function obtenerImagenes() {
     { id: 7, titulo: 'Foto 7', categoria: 'edificio', src: 'aseets/imagen/viajes-7.jpg', alt: 'Castillo sobre colina y casas blancas al atardecer' }
   ]
 }
-// guardar en una constante la función
+// 2º manera: guardar en una constante la función
 const imagenes = obtenerImagenes();
+
+
+/*================== portada: ==================*/
 
 // porta que saldra en grande
 const portadaInicial = { 
@@ -40,8 +61,29 @@ const portadaInicial = {
   console.log('Portada:', portadaInicial);
 
 
-
+/* =============================== */
 /* ========== FUNCIONES ========== */
+/* =============================== */
+
+//#region: CREAR BOTONES:
+const pintarBotones = () => {
+  const arrayBotones = botonesDeFiltro(); // Obtenemos el array de objetos que representan las categorías
+  //console.log(arrayBotones, "desde pintar botones")
+
+  // vacias buttonsBox antes de nada.
+  buttonsBox.innerHTML = "";
+
+  arrayBotones.forEach((elemento) => {
+    const boton = document.createElement('BUTTON');
+    boton.textContent = elemento.titulo // asignar texto visible
+    boton.dataset.cat = elemento.categoria; // guardar su categoría; con dataset más flexible que id
+    boton.setAttribute('aria-pressed', 'false'); // estado inicial no activo
+    boton.type = "button"; // tipo boton
+    buttonsBox.appendChild(boton) // añadir a la caja
+  })
+}
+//#endregion
+
 //#region: CREAR PORTADA 
 function crearPortada(datos) {
   const { titulo, src, alt} = datos;
@@ -133,11 +175,96 @@ function pintarCards (lista) {
 // Comprovar que funcione: si funciona colocar en invocaciones
 // pintarCards(imagenes);
 
+
+// Filtrar imagen por categoria;
+let categoriaActiva = null; // No hay categoría activa al inicio; se define al seleccionar una opción.
+let portadaActual = portadaInicial; // portada actual comienza con la inicial ya creada 
+let listaVisible = imagenes; // la lista que se esta mostrando  (por defecto)
+
+function filtrarPorCategoria(categoria) {
+  // Devuelve todas las imágenes cuya categoria coincide
+  return imagenes.filter(imagen => imagen.categoria === categoria);
+}
 /* ========== EVENTOS: ========== */
         /* = delegaciónes = */
+    // Escuchar todos los clics del documento:
+    
+document.addEventListener('click', (ev) => {
+  console.log(ev.target);
+
+  // Detectar que el clic sea en uno de los bottones de categoría
+  const btn = ev.target.closest("#buttons button"); // Usar closset para mayor precisión
+
+   if(btn) {
+    // Desactivar votones y activar solo el clicado
+    document.querySelectorAll('#buttons button').forEach(botn => {
+      botn.classList.remove('active');
+      botn.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
+
+    // Guardamos la categoría seleccionada
+    categoriaActiva = btn.dataset.cat;
+    console.log(btn.dataset.cat); // compobar la escucha
+
+    // Filtrar las imágenes según la categoría
+    const lista = filtrarPorCategoria(categoriaActiva); // Se crea array de imagenes de una categoria concreta
+    if(!lista.length) return; // evitar que pinte si no hay fotos
+
+    listaVisible = lista; // fijar la lista visible al filtro actual
+
+    // La primera imagen filtrada se usa como portada.
+    // Creamos un objeto independiente para no modificar el array original con .titulo / .src / .alt
+    portadaActual = {
+      titulo: lista[0].titulo,
+      src: lista[0].src,
+      alt: lista[0].alt
+    };
+
+    // Pintar portada en grande y las relacionadas de la categoria
+    pintarPortada(portadaActual); // Ya esta hecha
+    pintarCards(lista.slice(1)); // Imagenes relacionadas = el resto
+    return;
+  }
+
+  // Hacer que una miniatura clicada pase a portada
+    // detectar clic en miniatura -> sucar la imagen dentro de una .card
+  const imagenMini = ev.target.closest('.card img');
+
+  // Confirmar que hay categoria activa
+  if (imagenMini) {
+    ev.preventDefault() // Evitar el comportamiento por defecto del enlace a hacer clic
+    // Obtener los datos de la imagen
+
+    const fig = imagenMini.closest('.card');
+    const tituloH4 = fig.querySelector('h4');
+    
+    const srcRelativo = imagenMini.getAttribute('src'); // SRC RELATIVO para que coincida con el array/estado
+
+    // cambiar portada por medio de copia
+    portadaActual = {
+      titulo: tituloH4 ?tituloH4.textContent : "", // colocar titulo si existe
+      src: srcRelativo,
+      alt: imagenMini.alt
+    };
+     
+    // reordenar lista visible sin cambiar qué se muestra: portada anterior → pasa a ser “resto” 
+    const resto = listaVisible.filter(foto => foto.src !==portadaActual.src); // Quitar la nueva portada de la lista para evitar duplicado
+    const listaFinal = [portadaActual, ...resto];  // Indicar nuevo ordern
+
+    // Pintar otra vez portada + imagenes relacionadas
+    pintarPortada(portadaActual) // Pintar todo de nuevo
+    pintarCards(listaFinal.slice(1)) //el resto
+    return;
+  };
+
+
+})
 
 
 /* ========== INVOCACIÓNES ========== */
+pintarBotones(botonesDeFiltro)
 pintarPortada(portadaInicial);
 pintarCards(imagenes);
 
