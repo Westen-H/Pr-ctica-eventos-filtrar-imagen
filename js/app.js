@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-/*region
+/*region para hacer:
     // 1. Datos de ejemplo (variables: foto....)
     // 2. Filtrar por categoría seleccionada
     // 3. Pintar fotos (una principal y las relacionadas)
